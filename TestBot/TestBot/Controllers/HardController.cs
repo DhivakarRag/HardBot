@@ -15,8 +15,30 @@ namespace TestBot.Controllers
 {
     [Route("api/CricketBot")]
     [ApiController]
-    public class TestbotBowler : ControllerBase
+    public class HardController : ControllerBase
     {
+        private readonly MatchContext _context;
+
+        public HardController(MatchContext context)
+        {
+            _context = context;
+        }
+
+
+        public void InsertAnaytics(BallAnalytics ballAnalytics)
+        {
+            _context.BallByBallAnalytics.Add(ballAnalytics);
+        }
+
+        public List<BallAnalytics> getAnalytics()
+        {
+            return _context.BallByBallAnalytics.ToList();
+        }
+
+        //-----------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------
+
         [HttpGet]
         [Route("GetNextBall")]
         public BallModel GetNextBall()
