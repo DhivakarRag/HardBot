@@ -7,6 +7,13 @@ namespace TestBot.Bowling
 {
     public class BowlingService
     {
+        private HardRepository _hardRepository;
+
+        public BowlingService(HardRepository hardRepository)
+        {
+            _hardRepository = hardRepository;
+        }
+
         public static BallModel getBowlingData()
         {
             return getRandomBowling();
