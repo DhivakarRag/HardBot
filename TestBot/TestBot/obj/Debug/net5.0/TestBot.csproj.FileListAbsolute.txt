@@ -21,3 +21,14 @@ D:\bot\TestBot\TestBot\obj\Debug\net5.0\TestBot.dll
 D:\bot\TestBot\TestBot\obj\Debug\net5.0\ref\TestBot.dll
 D:\bot\TestBot\TestBot\obj\Debug\net5.0\TestBot.pdb
 D:\bot\TestBot\TestBot\obj\Debug\net5.0\TestBot.genruntimeconfig.cache
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.InMemory.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Microsoft.OpenApi.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\bot\TestBot\TestBot\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
+D:\bot\TestBot\TestBot\obj\Debug\net5.0\TestBot.MvcApplicationPartsAssemblyInfo.cs
+D:\bot\TestBot\TestBot\obj\Debug\net5.0\TestBot.csproj.CopyComplete
