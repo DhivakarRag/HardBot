@@ -42,5 +42,20 @@ namespace TestBot.Bowling
         {
             return _context.BallByBallAnalytics.Count();
         }
+
+        public bool hasWicketBall()
+        {
+            return _context.BallByBallAnalytics.Where(x => x.isWicket).Any();
+        }
+
+        public BallAnalytics getWicketBall()
+        {
+            return _context.BallByBallAnalytics.Where(x => x.isWicket).First();
+        }
+
+        public BallAnalytics getLeastScoredBall()
+        {
+            return _context.BallByBallAnalytics.OrderBy(x => x.runScored).First();
+        }
     }
 }

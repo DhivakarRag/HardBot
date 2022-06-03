@@ -18,7 +18,7 @@ namespace TestBot.Bowling
 
         public BallModel getBowlingData()
         {
-            var ballToBowl = getRandomBowling();
+            var ballToBowl = _hardRepository.hasWicketBall() ? getBallModel(_hardRepository.getWicketBall()) :  getRandomBowling();
 
             _hardRepository.InsertAnaytics(new BallAnalytics
             {
@@ -31,6 +31,18 @@ namespace TestBot.Bowling
             }) ;
 
             return ballToBowl;
+        }
+
+        private BallModel getBallModel(BallAnalytics ballAnalytics)
+        {
+            return new BallModel
+            {
+                bowlerType = ballAnalytics.bowlerType,
+                bowingType = ballAnalytics.bowlingType,
+                bowlerName = "Sachin",
+                speed = ballAnalytics.speed,
+                zone = ballAnalytics.pitchZone
+            };
         }
 
         private BallModel getRandomBowling()
