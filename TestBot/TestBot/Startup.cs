@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using TestBot.Match;
 using Microsoft.OpenApi.Models;
 using TestBot.Bowling;
+using TestBot.Controllers;
 
 namespace TestBot
 {
@@ -32,6 +33,7 @@ namespace TestBot
             services.AddControllers();
             services.AddDbContext<MatchContext>(option => option.UseInMemoryDatabase(Configuration.GetConnectionString("HARD_Database")));
             services.AddTransient<IRepository, HardRepository>();
+            services.AddTransient<IService, BowlingService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo

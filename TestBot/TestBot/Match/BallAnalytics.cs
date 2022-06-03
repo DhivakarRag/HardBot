@@ -9,20 +9,22 @@ namespace TestBot.Match
 {
     public class BallAnalytics
     {
-        int id { get; set; }
+        public int id { get; set; }
 
-        BowlerTypes bowlerType { get; set; }
+        public BowlerTypes bowlerType { get; set; }
 
-        BowlingType bowlingType { get; set; }
+        public BowlingType bowlingType { get; set; }
 
-        Shots shotPlayed { get; set; }
+        public int speed { get; set; }
 
-        int runScored { get; set; }
+        public BallPitchZone pitchZone { get; set; }
 
-        bool isWicket { get; set; }
+        public int runScored { get; set; }
 
-        FieldSet fieldSet { get; set; }
+        public bool isWicket { get; set; }
 
-        ComputedRating rating { get; set; }
+        public FieldSet fieldSet { get; set; }
+
+        public ComputedRating rating { get; set; }
     }
 }

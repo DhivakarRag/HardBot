@@ -1,6 +1,6 @@
 ﻿namespace TestBot.Match
 {
-    internal class FieldSet
+    public enum FieldSet
     {
     }
 }

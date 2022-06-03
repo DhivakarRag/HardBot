@@ -1,6 +1,6 @@
 ﻿namespace TestBot
 {
-    enum ComputedRating
+   public enum ComputedRating
     {
         GoodToBat=0,
         Average,

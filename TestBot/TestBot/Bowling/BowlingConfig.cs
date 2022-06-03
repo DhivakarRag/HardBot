@@ -8,5 +8,8 @@
     LAF_Outswinger,
     RAS_LegBreak,
     RAS_Googly,
-    RAS_OffBreak
+    RAS_OffBreak,
+    LAS_LegBreak,
+    LAS_Googly,
+    LAS_OffBreak
 }

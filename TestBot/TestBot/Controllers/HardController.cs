@@ -17,11 +17,19 @@ namespace TestBot.Controllers
     [ApiController]
     public class HardController : ControllerBase
     {
+
+        private  BowlingService _bowlingService;
+
+        public HardController(IService bowlingService)
+        {
+            _bowlingService = (BowlingService)bowlingService;
+        }
+
         [HttpGet]
         [Route("GetNextBall")]
         public BallModel GetNextBall()
         {
-            return BowlingService.getBowlingData();
+            return _bowlingService.getBowlingData();
         }
 
 
@@ -48,6 +56,7 @@ namespace TestBot.Controllers
         [Route("PostLastballStatus")]
         public HttpStatusCode PostLastballStatus(MatchProgressModel matchProgress)
         {
+            _bowlingService.getLastBallData(matchProgress);
             return HttpStatusCode.OK;
         }
 

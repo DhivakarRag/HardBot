@@ -2,24 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TestBot.Controllers;
+using TestBot.Match;
 
 namespace TestBot.Bowling
 {
-    public class BowlingService
+    public class BowlingService: IService
     {
         private HardRepository _hardRepository;
 
-        public BowlingService(HardRepository hardRepository)
+        public BowlingService(IRepository hardRepository)
         {
-            _hardRepository = hardRepository;
+            _hardRepository = (HardRepository)hardRepository;
         }
 
-        public static BallModel getBowlingData()
+        public BallModel getBowlingData()
         {
-            return getRandomBowling();
+            var ballToBowl = getRandomBowling();
+
+            _hardRepository.InsertAnaytics(new BallAnalytics
+            {
+                id = _hardRepository.getCountOfBalls()+1,
+                bowlerType = ballToBowl.bowlerType,
+                bowlingType=ballToBowl.bowingType,
+                speed=ballToBowl.speed,
+                pitchZone = ballToBowl.zone
+                
+            }) ;
+
+            return ballToBowl;
         }
 
-        private static BallModel getRandomBowling()
+        private BallModel getRandomBowling()
         {
             IDictionary<BowlingConfig, BallModel> allBowlingConfig= new Dictionary<BowlingConfig, BallModel>();
             allBowlingConfig.Add(BowlingConfig.RAF_Inswinger, getBallData(BowlerTypes.RAF, BowlingType.Inswingers, 160, BallPitchZone.zone2));
@@ -29,18 +43,25 @@ namespace TestBot.Bowling
             allBowlingConfig.Add(BowlingConfig.RAS_Googly, getBallData(BowlerTypes.RAS, BowlingType.Googly, 90, BallPitchZone.zone1));
             allBowlingConfig.Add(BowlingConfig.RAS_OffBreak, getBallData(BowlerTypes.RAS, BowlingType.OffBreak, 150, BallPitchZone.zone2));
 
+            allBowlingConfig.Add(BowlingConfig.LAF_Inswinger, getBallData(BowlerTypes.RAF, BowlingType.Inswingers, 160, BallPitchZone.zone2));
+            allBowlingConfig.Add(BowlingConfig.LAF_Bouncer, getBallData(BowlerTypes.RAF, BowlingType.Bouncer, 140, BallPitchZone.zone1));
+            allBowlingConfig.Add(BowlingConfig.LAF_Outswinger, getBallData(BowlerTypes.RAF, BowlingType.Outswinger, 150, BallPitchZone.zone2));
+            allBowlingConfig.Add(BowlingConfig.LAS_LegBreak, getBallData(BowlerTypes.RAS, BowlingType.LegBreak, 90, BallPitchZone.zone2));
+            allBowlingConfig.Add(BowlingConfig.LAS_Googly, getBallData(BowlerTypes.RAS, BowlingType.Googly, 90, BallPitchZone.zone1));
+            allBowlingConfig.Add(BowlingConfig.LAS_OffBreak, getBallData(BowlerTypes.RAS, BowlingType.OffBreak, 150, BallPitchZone.zone2));
+
             return allBowlingConfig[getRandom()];
 
         }
 
-        private static BowlingConfig getRandom()
+        private  BowlingConfig getRandom()
         {
             Array values = Enum.GetValues(typeof(BowlingConfig));
             Random random = new Random();
             return (BowlingConfig)values.GetValue(random.Next(values.Length));
         }
 
-        private static BallModel getBallData(BowlerTypes bowlerType, BowlingType bowlingType,int speed, BallPitchZone pitchZone)
+        private BallModel getBallData(BowlerTypes bowlerType, BowlingType bowlingType,int speed, BallPitchZone pitchZone)
         {
             return new BallModel
             {
@@ -50,6 +71,11 @@ namespace TestBot.Bowling
                 speed = speed,
                 zone = pitchZone
             };
+        }
+
+        public void getLastBallData(MatchProgressModel matchProgressModel)
+        {
+            _hardRepository.UpdateAnalytics(matchProgressModel);
         }
     }
 }
