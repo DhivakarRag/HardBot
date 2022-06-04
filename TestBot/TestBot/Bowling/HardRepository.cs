@@ -53,9 +53,14 @@ namespace TestBot.Bowling
             return _context.BallByBallAnalytics.Where(x => x.isWicket).First();
         }
 
-        public BallAnalytics getLeastScoredBall()
+        public bool hasDotBall()
         {
-            return _context.BallByBallAnalytics.OrderBy(x => x.runScored).First();
+            return _context.BallByBallAnalytics.Where(x => x.runScored == 0).Any();
+        }
+
+        public BallAnalytics getDotBall()
+        {
+            return _context.BallByBallAnalytics.Where(x=>x.runScored == 0).First();
         }
     }
 }

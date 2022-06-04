@@ -19,7 +19,7 @@ namespace TestBot.Match
 
         public BallPitchZone pitchZone { get; set; }
 
-        public int runScored { get; set; }
+        public int? runScored { get; set; }
 
         public bool isWicket { get; set; }
 
