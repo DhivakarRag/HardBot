@@ -19,9 +19,9 @@ namespace TestBot.Bowling
             _allBalls = hardRepository.GetBowlingConfigs();
         }
 
-        public BallModel getBowlingData()
+        public (BallModel,int) getBowlingData()
         {
-            var ballToBowl = decideBallToBowl();
+            var ballToBowl = decideBallToBowl().Item1;
 
             _hardRepository.InsertAnaytics(new BallAnalytics
             {
@@ -34,22 +34,22 @@ namespace TestBot.Bowling
                 
             }) ;
 
-            return ballToBowl;
+            return (ballToBowl,decideBallToBowl().Item2);
         }
 
-        private BallModel decideBallToBowl()
+        private (BallModel,int) decideBallToBowl()
         {
             if(_hardRepository.hasWicketBall())
             {
-                return getBallModel(_hardRepository.getWicketBall());
+                return (getBallModel(_hardRepository.getWicketBall()),1);
             }
             else if (_hardRepository.hasDotBall())
             {
-                return getBallModel(_hardRepository.getDotBall());
+                return (getBallModel(_hardRepository.getDotBall()),1);
             }
             else if(_hardRepository.hasTriedEnough())
             {
-                return getBallModel(_hardRepository.getAnalytics().OrderBy(x=>x.runScored).First());
+                return (getBallModel(_hardRepository.getAnalytics().OrderBy(x=>x.runScored).First()),1);
             }
 
             return getChronologicalBowling();
@@ -67,22 +67,24 @@ namespace TestBot.Bowling
             };
         }
 
-        private BallModel getChronologicalBowling()
-        {
-            return _allBalls.Select(x=> new BallModel
+        private (BallModel,int) getChronologicalBowling()
+
+        { 
+            return (_allBalls.Select(x=> new BallModel
             {
                 bowingType = x.bowlingType,
                 bowlerType =x.bowlerType,
                 speed = x.speed,
                 zone = x.pitchZone,
                 bowlerName="Sachin"
-            }).First();
+            }).First(), _allBalls.First().id);
 
-        }
+}
 
-        public void postLastBallData(MatchProgressModel matchProgressModel)
+        public void postLastBallData(MatchProgressModel matchProgressModel,int currentBowlingConfigId)
         {
             _hardRepository.UpdateAnalytics(matchProgressModel);
+            _hardRepository.UpdateBowlingConfig(currentBowlingConfigId);
         }
     }
 }

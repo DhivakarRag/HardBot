@@ -73,5 +73,11 @@ namespace TestBot.Bowling
             return _context.BowlingConfigs.Where(x => x.isTried).Count() > 20;
         }
 
+        internal void UpdateBowlingConfig(int currentBowlingConfigId)
+        {
+            var currentBall = _context.BowlingConfigs.Where(x => x.id == currentBowlingConfigId).First();
+            currentBall.isTried = true;
+            _context.SaveChanges();
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace TestBot.Controllers
 
         public static BallModel CurrentBall;
 
+        public static int currentBowlingConfigId;
+
         public static IDictionary<BowlingType, List<Shots>> _BallToShotMap;
 
         public HardController(IService bowlingService)
@@ -76,7 +78,8 @@ namespace TestBot.Controllers
         [Route("PostLastballStatus")]
         public HttpStatusCode PostLastballStatus(MatchProgressModel matchProgress)
         {
-            _bowlingService.postLastBallData(matchProgress);
+            _bowlingService.postLastBallData(matchProgress, currentBowlingConfigId);
+
             return HttpStatusCode.OK;
         }
 
@@ -84,7 +87,10 @@ namespace TestBot.Controllers
         [Route("Getfieldsetting")]
         public List<FieldingModel> Getfieldsetting()
         {
-            CurrentBall = _bowlingService.getBowlingData();
+            var result = _bowlingService.getBowlingData();
+
+            CurrentBall = result.Item1;
+            currentBowlingConfigId = result.Item2;
 
             return getFieldForBall(CurrentBall);         
         }
