@@ -20,16 +20,35 @@ namespace TestBot.Controllers
 
         private  BowlingService _bowlingService;
 
+        public static BallModel CurrentBall;
+
+        public static IDictionary<BowlingType, List<Shots>> _BallToShotMap;
+
         public HardController(IService bowlingService)
         {
             _bowlingService = (BowlingService)bowlingService;
+            _BallToShotMap = LoadBallToShotMap();
+        }
+
+        private IDictionary<BowlingType, List<Shots>> LoadBallToShotMap()
+        {
+            var map =  new Dictionary<BowlingType, List<Shots>>();
+
+            map.Add(BowlingType.Inswingers, new List<Shots> { Shots.Ondrive,Shots.pull,Shots.Straightdrive,Shots.Sweep});
+            map.Add(BowlingType.Outswinger, new List<Shots> { Shots.Coverdrive,Shots.Cut,Shots.latecut,Shots.Offdrive });
+            map.Add(BowlingType.Bouncer, new List<Shots> {Shots.Uppercut,Shots.pull,Shots.hook });
+            map.Add(BowlingType.OffBreak, new List<Shots> {Shots.Sweep,Shots.latecut,Shots.Straightdrive,Shots.Ondrive });
+            map.Add(BowlingType.LegBreak, new List<Shots> { Shots.Coverdrive, Shots.Cut, Shots.latecut, Shots.Offdrive });
+            map.Add(BowlingType.Googly, new List<Shots> { Shots.Sweep, Shots.latecut, Shots.Straightdrive, Shots.Ondrive });
+
+            return map;
         }
 
         [HttpGet]
         [Route("GetNextBall")]
         public BallModel GetNextBall()
         {
-            return _bowlingService.getBowlingData();
+            return CurrentBall;
         }
 
 
@@ -44,6 +63,7 @@ namespace TestBot.Controllers
                 batsman = "KapilDev"
             };
         }
+
         [HttpPost]
         [Route("Postfieldsetting")]
         public HttpStatusCode Postfieldsetting(List<FieldingModel> fieldingModels)
@@ -56,28 +76,70 @@ namespace TestBot.Controllers
         [Route("PostLastballStatus")]
         public HttpStatusCode PostLastballStatus(MatchProgressModel matchProgress)
         {
-            _bowlingService.getLastBallData(matchProgress);
+            _bowlingService.postLastBallData(matchProgress);
             return HttpStatusCode.OK;
         }
-
 
         [HttpGet]
         [Route("Getfieldsetting")]
         public List<FieldingModel> Getfieldsetting()
         {
-            List<FieldingModel> fieldingModels = new List<FieldingModel>();
-            fieldingModels.Add(new FieldingModel { fp = fieldPosition.z1, Prvshot = Shots.Coverdrive });
-            return fieldingModels;
+            CurrentBall = _bowlingService.getBowlingData();
+
+            return getFieldForBall(CurrentBall);         
         }
 
         [HttpGet]
         [Route("Toss")]
         public Toss GetTossCall()
         {
-           
-
             return Toss.Tail;
         }
 
+        private List<FieldingModel> getFieldForBall(BallModel currentBall)
+        {
+            List<FieldingModel> fieldingModels = new List<FieldingModel>();
+
+            List<Shots> shots = _BallToShotMap[currentBall.bowingType];
+
+
+            foreach (var shot in shots)
+            {
+                fieldingModels.Add(new FieldingModel
+                {
+                    fp = fieldPosition.z4,
+                    Prvshot = shot
+                });
+            }
+
+            foreach (var shot in shots)
+            {             
+                    fieldingModels.Add(new FieldingModel
+                    {
+                        fp = fieldPosition.z3,
+                        Prvshot = shot
+                    });                             
+            }
+
+            foreach (var shot in shots)
+            {             
+                    fieldingModels.Add(new FieldingModel
+                    {
+                        fp = fieldPosition.z2,
+                        Prvshot = shot
+                    });
+            }
+
+            foreach (var shot in shots)
+            {
+                fieldingModels.Add(new FieldingModel
+                {
+                    fp = fieldPosition.z1,
+                    Prvshot = shot
+                });
+            }
+
+            return fieldingModels.Take(9).ToList();
+        }
     }
 }

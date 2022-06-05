@@ -9,6 +9,6 @@ namespace TestBot
 
 
         public List<BallAnalytics> getAnalytics();
-        
+        public List<BowlingConfigs> GetBowlingConfigs();
     }
 }

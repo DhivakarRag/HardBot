@@ -4,6 +4,6 @@ namespace TestBot.Controllers
 {
     public interface IService
     {
-        void getLastBallData(MatchProgressModel matchProgressModel);
+        void postLastBallData(MatchProgressModel matchProgressModel);
     }
 }

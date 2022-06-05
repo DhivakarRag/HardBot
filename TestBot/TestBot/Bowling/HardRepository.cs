@@ -62,5 +62,16 @@ namespace TestBot.Bowling
         {
             return _context.BallByBallAnalytics.Where(x=>x.runScored == 0).First();
         }
+
+        public List<BowlingConfigs> GetBowlingConfigs()
+        {
+            return _context.BowlingConfigs.Where(x => x.isTried).ToList();
+        }
+
+        public bool hasTriedEnough()
+        {
+            return _context.BowlingConfigs.Where(x => x.isTried).Count() > 20;
+        }
+
     }
 }

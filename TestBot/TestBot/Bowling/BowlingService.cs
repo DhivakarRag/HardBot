@@ -11,9 +11,12 @@ namespace TestBot.Bowling
     {
         private HardRepository _hardRepository;
 
+        private static List<BowlingConfigs> _allBalls;
+
         public BowlingService(IRepository hardRepository)
         {
             _hardRepository = (HardRepository)hardRepository;
+            _allBalls = hardRepository.GetBowlingConfigs();
         }
 
         public BallModel getBowlingData()
@@ -27,8 +30,7 @@ namespace TestBot.Bowling
                 bowlingType=ballToBowl.bowingType,
                 speed=ballToBowl.speed,
                 pitchZone = ballToBowl.zone,
-                runScored = null
-                
+                runScored = null             
                 
             }) ;
 
@@ -45,8 +47,12 @@ namespace TestBot.Bowling
             {
                 return getBallModel(_hardRepository.getDotBall());
             }
+            else if(_hardRepository.hasTriedEnough())
+            {
+                return getBallModel(_hardRepository.getAnalytics().OrderBy(x=>x.runScored).First());
+            }
 
-            return getRandomBowling();
+            return getChronologicalBowling();
         }
 
         private BallModel getBallModel(BallAnalytics ballAnalytics)
@@ -61,47 +67,20 @@ namespace TestBot.Bowling
             };
         }
 
-        private BallModel getRandomBowling()
+        private BallModel getChronologicalBowling()
         {
-            IDictionary<BowlingConfig, BallModel> allBowlingConfig= new Dictionary<BowlingConfig, BallModel>();
-            allBowlingConfig.Add(BowlingConfig.RAF_Inswinger, getBallData(BowlerTypes.RAF, BowlingType.Inswingers, 160, BallPitchZone.zone2));
-            allBowlingConfig.Add(BowlingConfig.RAF_Bouncer, getBallData(BowlerTypes.RAF, BowlingType.Bouncer, 140, BallPitchZone.zone1));
-            allBowlingConfig.Add(BowlingConfig.RAF_Outswinger, getBallData(BowlerTypes.RAF, BowlingType.Outswinger, 150, BallPitchZone.zone2));
-            allBowlingConfig.Add(BowlingConfig.RAS_LegBreak, getBallData(BowlerTypes.RAS, BowlingType.LegBreak, 90, BallPitchZone.zone2));
-            allBowlingConfig.Add(BowlingConfig.RAS_Googly, getBallData(BowlerTypes.RAS, BowlingType.Googly, 90, BallPitchZone.zone1));
-            allBowlingConfig.Add(BowlingConfig.RAS_OffBreak, getBallData(BowlerTypes.RAS, BowlingType.OffBreak, 150, BallPitchZone.zone2));
-
-            allBowlingConfig.Add(BowlingConfig.LAF_Inswinger, getBallData(BowlerTypes.RAF, BowlingType.Inswingers, 160, BallPitchZone.zone2));
-            allBowlingConfig.Add(BowlingConfig.LAF_Bouncer, getBallData(BowlerTypes.RAF, BowlingType.Bouncer, 140, BallPitchZone.zone1));
-            allBowlingConfig.Add(BowlingConfig.LAF_Outswinger, getBallData(BowlerTypes.RAF, BowlingType.Outswinger, 150, BallPitchZone.zone2));
-            allBowlingConfig.Add(BowlingConfig.LAS_LegBreak, getBallData(BowlerTypes.RAS, BowlingType.LegBreak, 90, BallPitchZone.zone2));
-            allBowlingConfig.Add(BowlingConfig.LAS_Googly, getBallData(BowlerTypes.RAS, BowlingType.Googly, 90, BallPitchZone.zone1));
-            allBowlingConfig.Add(BowlingConfig.LAS_OffBreak, getBallData(BowlerTypes.RAS, BowlingType.OffBreak, 150, BallPitchZone.zone2));
-
-            return allBowlingConfig[getRandom()];
-
-        }
-
-        private  BowlingConfig getRandom()
-        {
-            Array values = Enum.GetValues(typeof(BowlingConfig));
-            Random random = new Random();
-            return (BowlingConfig)values.GetValue(random.Next(values.Length));
-        }
-
-        private BallModel getBallData(BowlerTypes bowlerType, BowlingType bowlingType,int speed, BallPitchZone pitchZone)
-        {
-            return new BallModel
+            return _allBalls.Select(x=> new BallModel
             {
-                bowlerType = bowlerType,
-                bowingType = bowlingType,
-                bowlerName = "Sachin",              
-                speed = speed,
-                zone = pitchZone
-            };
+                bowingType = x.bowlingType,
+                bowlerType =x.bowlerType,
+                speed = x.speed,
+                zone = x.pitchZone,
+                bowlerName="Sachin"
+            }).First();
+
         }
 
-        public void getLastBallData(MatchProgressModel matchProgressModel)
+        public void postLastBallData(MatchProgressModel matchProgressModel)
         {
             _hardRepository.UpdateAnalytics(matchProgressModel);
         }
