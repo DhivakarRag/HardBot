@@ -65,7 +65,7 @@ namespace TestBot.Bowling
 
         public List<BowlingConfigs> GetBowlingConfigs()
         {
-            return _context.BowlingConfigs.Where(x => x.isTried).ToList();
+            return _context.BowlingConfigs.Where(x => !x.isTried).ToList();
         }
 
         public bool hasTriedEnough()

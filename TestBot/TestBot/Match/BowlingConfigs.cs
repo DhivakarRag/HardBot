@@ -4,7 +4,7 @@ namespace TestBot.Match
 {
     public class BowlingConfigs
     {
-        internal bool isTried;
+        public bool isTried { get; set; }
 
         public int id { get; set; }
 

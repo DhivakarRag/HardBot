@@ -80,7 +80,10 @@ namespace TestBot
                 c.RoutePrefix = string.Empty;
             });
 
-            seedBowlingData(app.ApplicationServices.GetService<MatchContext>());
+            var scope = app.ApplicationServices.CreateScope();
+
+            
+            seedBowlingData(scope.ServiceProvider.GetService<MatchContext>());
         }
 
         public static void seedBowlingData(MatchContext context)
