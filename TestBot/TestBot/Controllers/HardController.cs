@@ -20,6 +20,8 @@ namespace TestBot.Controllers
 
         private  BowlingService _bowlingService;
 
+        private  BattingService _battingService;
+
         public static BallModel CurrentBall;
 
         public static int currentBowlingConfigId;
@@ -58,10 +60,15 @@ namespace TestBot.Controllers
         [Route("PostBalldata")]
         public BatsmanModel PostBalldata(BallModel nextball)
         {
+
+            Shots Shot = _battingService.getShot(nextball);
+            int batSpeed = _battingService.getBatSpeed(Shot,nextball);
+
+
             return new BatsmanModel
             {
-                batSpeed = 60 ,
-                shots = Shots.Cut,
+                batSpeed = batSpeed,
+                shots = Shot,
                 batsman = "KapilDev"
             };
         }
