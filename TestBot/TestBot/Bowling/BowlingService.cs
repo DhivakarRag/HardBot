@@ -40,20 +40,23 @@ namespace TestBot.Bowling
 
         private (BallModel,int) decideBallToBowl()
         {
-            if(_hardRepository.hasWicketBall())
+            
+            if(_hardRepository.hasTriedEnough())
             {
-                return (getBallModel(_hardRepository.getWicketBall()),1);
-            }
-            else if (_hardRepository.hasDotBall())
-            {
-                return (getBallModel(_hardRepository.getDotBall()),1);
-            }
-            else if(_hardRepository.hasTriedEnough())
-            {
+
+                if (_hardRepository.hasWicketBall())
+                {
+                    return (getBallModel(_hardRepository.getWicketBall()), 1);
+                }
+                else if (_hardRepository.hasDotBall())
+                {
+                    return (getBallModel(_hardRepository.getDotBall()), 1);
+                }
+
                 return (getBallModel(_hardRepository.getAnalytics().OrderBy(x=>x.runScored).First()),1);
             }
 
-            return getChronologicalBowling();
+            return getRandomBowling();
         }
 
         private BallModel getBallModel(BallAnalytics ballAnalytics)
@@ -62,13 +65,38 @@ namespace TestBot.Bowling
             {
                 bowlerType = ballAnalytics.bowlerType,
                 bowingType = ballAnalytics.bowlingType,
-                bowlerName = "Sachin",
+                bowlerName = getPlayerName(),
                 speed = ballAnalytics.speed,
                 zone = ballAnalytics.pitchZone
             };
         }
 
-        private (BallModel,int) getChronologicalBowling()
+        public string getPlayerName()
+        {
+            string[] playerList =
+            {
+                "Sir Whiskey",
+                "Sir Absolute",
+                "Sir Jameson",
+                "Sir Jack Daniels",
+                "Sir Black Dog",
+                "Sir Johnie Walker",
+                "Sir Balentine",
+                "Sir Chivas Regal",
+                "Sir Jagermeister",
+                "Sir Jim beam",
+                "Sir Old Monk"
+            };
+
+            var random = new Random();
+
+            var index = random.Next(playerList.Count());
+
+           return playerList[index];
+
+        }
+
+        private (BallModel,int) getRandomBowling()
         {
             var random = new Random();
 
@@ -82,7 +110,7 @@ namespace TestBot.Bowling
                 bowlerType = ballToBowl.bowlerType,
                 speed = ballToBowl.speed,
                 zone = ballToBowl.pitchZone,
-                bowlerName = "Sachin"
+                bowlerName = getPlayerName()
             }, ballToBowl.id);
 
 }

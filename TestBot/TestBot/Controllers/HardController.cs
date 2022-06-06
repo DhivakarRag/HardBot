@@ -67,7 +67,7 @@ namespace TestBot.Controllers
             {
                 batSpeed = batSpeed,
                 shots = Shot,
-                batsman = "KapilDev"
+                batsman = _bowlingService.getPlayerName()
             };
         }
 
