@@ -69,16 +69,21 @@ namespace TestBot.Bowling
         }
 
         private (BallModel,int) getChronologicalBowling()
+        {
+            var random = new Random();
 
-        { 
-            return (_allBalls.Select(x=> new BallModel
+            var index = random.Next(_allBalls.Count());
+
+            var ballToBowl = _allBalls[index];
+
+            return (new BallModel
             {
-                bowingType = x.bowlingType,
-                bowlerType =x.bowlerType,
-                speed = x.speed,
-                zone = x.pitchZone,
-                bowlerName="Sachin"
-            }).First(), _allBalls.First().id);
+                bowingType = ballToBowl.bowlingType,
+                bowlerType = ballToBowl.bowlerType,
+                speed = ballToBowl.speed,
+                zone = ballToBowl.pitchZone,
+                bowlerName = "Sachin"
+            }, ballToBowl.id);
 
 }
 
