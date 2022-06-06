@@ -20,8 +20,6 @@ namespace TestBot.Controllers
 
         private  BowlingService _bowlingService;
 
-        private  BattingService _battingService;
-
         public static BallModel CurrentBall;
 
         public static int currentBowlingConfigId;
@@ -61,8 +59,8 @@ namespace TestBot.Controllers
         public BatsmanModel PostBalldata(BallModel nextball)
         {
 
-            Shots Shot = _battingService.getShot(nextball);
-            int batSpeed = _battingService.getBatSpeed(Shot,nextball);
+            Shots Shot = _bowlingService.getShot(nextball);
+            int batSpeed = _bowlingService.getBatSpeed(Shot,nextball);
 
 
             return new BatsmanModel
