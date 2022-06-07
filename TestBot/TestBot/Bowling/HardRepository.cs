@@ -66,12 +66,11 @@ namespace TestBot.Bowling
         public List<BowlingConfigs> GetBowlingConfigs()
         {
             return _context.BowlingConfigs.Where(x => !x.isTried).ToList();
-
         }
 
         public bool hasTriedEnough()
         {
-            return _context.BowlingConfigs.Where(x => x.isTried).Count() > 1;
+            return _context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 15;
         }
 
         internal void UpdateBowlingConfig(int currentBowlingConfigId)
