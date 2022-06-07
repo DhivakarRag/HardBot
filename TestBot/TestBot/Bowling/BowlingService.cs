@@ -40,8 +40,8 @@ namespace TestBot.Bowling
 
         private (BallModel,int) decideBallToBowl()
         {
-            
-            if(_hardRepository.hasTriedEnough())
+
+            if (_hardRepository.hasTriedEnough())
             {
 
                 if (_hardRepository.hasWicketBall())
@@ -53,7 +53,7 @@ namespace TestBot.Bowling
                     return (getBallModel(_hardRepository.getDotBall()), 1);
                 }
 
-                return (getBallModel(_hardRepository.getAnalytics().OrderBy(x=>x.runScored).First()),1);
+                return (getBallModel(_hardRepository.getAnalytics().OrderBy(x => x.runScored).First()), 1);
             }
 
             return getRandomBowling();
@@ -270,15 +270,15 @@ namespace TestBot.Bowling
             double speedofBat = 100;
             double speedOfBall = ballingData.speed * 0.28; // converting into m/s
             int speedOfBallInTrajectory = 33;
-            double massOfBall = 0.153;
-            double massOfBat = 1.5;
+            double massOfBall = 153;
+            double massOfBat = 1500;
 
 
             double speedOfTrajectoryBall =
               massOfBall *
               speedOfBallInTrajectory *
-              speedOfBallInTrajectory *
-              Math.Cos(0.01762 * angle); //Angle into radians
+              speedOfBallInTrajectory;
+            
 
             double speedOfBallInitial = massOfBall * speedOfBall * speedOfBall;
 
