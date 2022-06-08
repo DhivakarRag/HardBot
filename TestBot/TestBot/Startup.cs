@@ -39,7 +39,7 @@ namespace TestBot
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "HARD BOT API",
-                    Version = "v1",
+                    Version = "v10",
                     Description = "Description for the API goes here.",
                     Contact = new OpenApiContact
                     {

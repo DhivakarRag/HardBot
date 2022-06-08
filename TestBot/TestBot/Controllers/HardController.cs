@@ -50,7 +50,7 @@ namespace TestBot.Controllers
         [Route("GetNextBall")]
         public BallModel GetNextBall()
         {
-            return CurrentBall;
+            return CurrentBall ?? _bowlingService.getBowlingData().Item1;
         }
 
 
