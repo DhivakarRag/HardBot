@@ -58,10 +58,8 @@ namespace TestBot.Controllers
         [Route("PostBalldata")]
         public BatsmanModel PostBalldata(BallModel nextball)
         {
-
             Shots Shot = _bowlingService.getShot(nextball);
             int batSpeed = _bowlingService.getBatSpeed(Shot,nextball);
-
 
             return new BatsmanModel
             {

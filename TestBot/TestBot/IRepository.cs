@@ -8,7 +8,7 @@ namespace TestBot
         public void InsertAnaytics(BallAnalytics ballAnalytics);
 
 
-        public List<BallAnalytics> getAnalytics();
+        public List<BowlingConfigs> getAnalytics();
         public List<BowlingConfigs> GetBowlingConfigs();
     }
 }

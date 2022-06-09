@@ -21,9 +21,9 @@ namespace TestBot.Bowling
             _context.SaveChanges();
         }
 
-        public List<BallAnalytics> getAnalytics()
+        public List<BowlingConfigs> getAnalytics()
         {
-            return _context.BallByBallAnalytics.ToList();
+            return _context.BowlingConfigs.ToList();
         }
 
         public void UpdateAnalytics(MatchProgressModel matchProgress)
@@ -45,22 +45,22 @@ namespace TestBot.Bowling
 
         public bool hasWicketBall()
         {
-            return _context.BallByBallAnalytics.Where(x => x.isWicket).Any();
+            return _context.BowlingConfigs.Where(x => x.gotWicketOnLastBall).Any();
         }
 
-        public BallAnalytics getWicketBall()
+        public BowlingConfigs getWicketBall()
         {
-            return _context.BallByBallAnalytics.Where(x => x.isWicket).First();
+            return _context.BowlingConfigs.Where(x => x.gotWicketOnLastBall).First();
         }
 
         public bool hasDotBall()
         {
-            return _context.BallByBallAnalytics.Where(x => x.runScored == 0).Any();
+            return _context.BowlingConfigs.Where(x => x.runsOnLastBall == 0).Any();
         }
 
-        public BallAnalytics getDotBall()
+        public BowlingConfigs getDotBall()
         {
-            return _context.BallByBallAnalytics.Where(x=>x.runScored == 0).First();
+            return _context.BowlingConfigs.Where(x=>x.runsOnLastBall == 0).First();
         }
 
         public List<BowlingConfigs> GetBowlingConfigs()
@@ -70,13 +70,17 @@ namespace TestBot.Bowling
 
         public bool hasTriedEnough()
         {
-            return _context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 15;
+            return _context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 25;
         }
 
-        internal void UpdateBowlingConfig(int currentBowlingConfigId)
+        internal void UpdateBowlingConfig(int currentBowlingConfigId, bool gotWicket, int runsOnLastBall)
         {
             var currentBall = _context.BowlingConfigs.Where(x => x.id == currentBowlingConfigId).First();
             currentBall.isTried = true;
+            currentBall.gotWicketOnLastBall = gotWicket;
+            currentBall.runsOnLastBall = runsOnLastBall;
+            currentBall.timesBowled++;
+
             _context.SaveChanges();
         }
     }

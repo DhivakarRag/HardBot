@@ -30,8 +30,7 @@ namespace TestBot.Bowling
                 bowlerType = ballToBowl.bowlerType,
                 bowlingType=ballToBowl.bowingType,
                 speed=ballToBowl.speed,
-                pitchZone = ballToBowl.zone,
-                runScored = null             
+                pitchZone = ballToBowl.zone  
                 
             }) ;
 
@@ -41,9 +40,6 @@ namespace TestBot.Bowling
         private (BallModel,int) decideBallToBowl()
         {
 
-            if (_hardRepository.hasTriedEnough())
-            {
-
                 if (_hardRepository.hasWicketBall())
                 {
                     return (getBallModel(_hardRepository.getWicketBall()), 1);
@@ -52,14 +48,15 @@ namespace TestBot.Bowling
                 {
                     return (getBallModel(_hardRepository.getDotBall()), 1);
                 }
-
-                return (getBallModel(_hardRepository.getAnalytics().OrderBy(x => x.runScored).First()), 1);
-            }
+                else if (_hardRepository.hasTriedEnough())
+                {
+                return (getBallModel(_hardRepository.getAnalytics().OrderBy(x => x.runsOnLastBall).First()), 1);
+                }
 
             return getRandomBowling();
         }
 
-        private BallModel getBallModel(BallAnalytics ballAnalytics)
+        private BallModel getBallModel(BowlingConfigs ballAnalytics)
         {
             return new BallModel
             {
@@ -118,7 +115,7 @@ namespace TestBot.Bowling
         public void postLastBallData(MatchProgressModel matchProgressModel,int currentBowlingConfigId)
         {
             _hardRepository.UpdateAnalytics(matchProgressModel);
-            _hardRepository.UpdateBowlingConfig(currentBowlingConfigId);
+            _hardRepository.UpdateBowlingConfig(currentBowlingConfigId,matchProgressModel.iswicketlost,matchProgressModel.runonlastball);
         }
 
         public Shots getShot(BallModel ballingData)
