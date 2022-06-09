@@ -53,6 +53,13 @@ namespace TestBot.Controllers
             return CurrentBall ?? _bowlingService.getBowlingData().Item1;
         }
 
+        [HttpGet]
+        [Route("oldData")]
+        public int OldData()
+        {
+            return  _bowlingService.getIsTriedCount();
+        }
+
 
         [HttpPost]
         [Route("PostBalldata")]

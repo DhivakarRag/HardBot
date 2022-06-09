@@ -68,6 +68,12 @@ namespace TestBot.Bowling
             };
         }
 
+        internal int getIsTriedCount()
+        {
+            return 45 - _allBalls.Count();
+
+        }
+
         public string getPlayerName()
         {
             string[] playerList =
