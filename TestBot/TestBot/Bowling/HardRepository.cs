@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TestBot.Batting;
 using TestBot.Match;
 
 namespace TestBot.Bowling
@@ -34,7 +35,16 @@ namespace TestBot.Bowling
                 lastBallData.isWicket = matchProgress.iswicketlost;
                 lastBallData.runScored = matchProgress.runonlastball;
                 _context.SaveChanges();
-            }          
+            }
+
+            if (_context.BattingConfigs.Any())
+            {
+                var lastBallData = _context.BattingConfigs.OrderByDescending(x => x.id).First();
+                lastBallData.isWicket = matchProgress.iswicketlost;
+                lastBallData.runScored = matchProgress.runonlastball;
+                _context.SaveChanges();
+            }
+
 
         }
 
@@ -82,6 +92,17 @@ namespace TestBot.Bowling
             currentBall.timesBowled++;
 
             _context.SaveChanges();
+        }
+
+        internal void InsertBattingAnaytics(Shots shot, int batSpeed, int ballSpeed)
+        {
+            _context.BattingConfigs.Add(new BattingConfigs
+            {
+                id = _context.BattingConfigs.Count() + 1,
+                ballSpeed = ballSpeed,
+                batSpeed = batSpeed,
+                shotPlayed = shot.ToString()
+            }) ;
         }
     }
 }

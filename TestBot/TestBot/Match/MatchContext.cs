@@ -16,6 +16,8 @@ namespace TestBot.Match
         public DbSet<BallAnalytics> BallByBallAnalytics { get; set; }
 
         public DbSet<BowlingConfigs> BowlingConfigs { get; set; }
+        public DbSet<BattingConfigs> BattingConfigs { get; set; }
+
 
 
     }

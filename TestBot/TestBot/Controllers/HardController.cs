@@ -68,6 +68,8 @@ namespace TestBot.Controllers
             Shots Shot = _bowlingService.getShot(nextball);
             int batSpeed = _bowlingService.getBatSpeed(Shot,nextball);
 
+            _bowlingService.insertBattingConfig(Shot,batSpeed,nextball.speed);
+
             return new BatsmanModel
             {
                 batSpeed = batSpeed,

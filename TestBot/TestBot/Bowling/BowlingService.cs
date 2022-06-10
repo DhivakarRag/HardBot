@@ -99,6 +99,11 @@ namespace TestBot.Bowling
 
         }
 
+        internal void insertBattingConfig(Shots shot, int batSpeed, int ballSpeed)
+        {
+            _hardRepository.InsertBattingAnaytics(shot, batSpeed, ballSpeed);
+        }
+
         private (BallModel,int) getRandomBowling()
         {
             var random = new Random();
