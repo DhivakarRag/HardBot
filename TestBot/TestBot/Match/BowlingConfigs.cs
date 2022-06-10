@@ -4,7 +4,7 @@ namespace TestBot.Match
 {
     public class BowlingConfigs
     {
-        public int runsOnLastBall { get; set; }
+        public int? runsOnLastBall { get; set; }
 
         public bool isTried { get; set; }
 
