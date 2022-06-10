@@ -1,6 +1,6 @@
 ﻿namespace TestBot.Match
 {
-    public class BattingConfigs
+    public class BattingRecords
     {
         public int id{ get; set; }
         public int ballSpeed{ get; set; }

@@ -83,7 +83,7 @@ namespace TestBot.Bowling
             return _context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 25;
         }
 
-        internal List<BattingConfigs> GetBattingConfigs()
+        internal List<BattingRecords> GetBattingConfigs()
         {
             return _context.BattingConfigs.ToList();
         }
@@ -101,7 +101,7 @@ namespace TestBot.Bowling
 
         internal void InsertBattingAnaytics(Shots shot, int batSpeed, int ballSpeed)
         {
-            _context.BattingConfigs.Add(new BattingConfigs
+            _context.BattingConfigs.Add(new BattingRecords
             {
                 id = _context.BattingConfigs.Count() + 1,
                 ballSpeed = ballSpeed,

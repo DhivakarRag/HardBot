@@ -74,7 +74,7 @@ namespace TestBot.Bowling
 
         }
 
-        internal List<BattingConfigs> getBattingConfigs()
+        internal List<BattingRecords> getBattingConfigs()
         {
             return _hardRepository.GetBattingConfigs();
         }

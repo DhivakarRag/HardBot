@@ -63,7 +63,7 @@ namespace TestBot.Controllers
 
         [HttpGet]
         [Route("GetBattingConfig")]
-        public List<BattingConfigs> GetBattingConfig()
+        public List<BattingRecords> GetBattingConfig()
         {
             return _bowlingService.getBattingConfigs();
         }
