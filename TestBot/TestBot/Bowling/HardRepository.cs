@@ -37,9 +37,9 @@ namespace TestBot.Bowling
                 _context.SaveChanges();
             }
 
-            if (_context.BattingConfigs.Any())
+            if (_context.BattingRecords.Any())
             {
-                var lastBallData = _context.BattingConfigs.OrderByDescending(x => x.id).First();
+                var lastBallData = _context.BattingRecords.OrderByDescending(x => x.id).First();
                 lastBallData.isWicket = matchProgress.iswicketlost;
                 lastBallData.runScored = matchProgress.runonlastball;
                 _context.SaveChanges();
@@ -85,7 +85,7 @@ namespace TestBot.Bowling
 
         internal List<BattingRecords> GetBattingConfigs()
         {
-            return _context.BattingConfigs.ToList();
+            return _context.BattingRecords.ToList();
         }
 
         internal void UpdateBowlingConfig(int currentBowlingConfigId, bool gotWicket, int runsOnLastBall)
@@ -101,9 +101,9 @@ namespace TestBot.Bowling
 
         internal void InsertBattingAnaytics(Shots shot, int batSpeed, int ballSpeed)
         {
-            _context.BattingConfigs.Add(new BattingRecords
+            _context.BattingRecords.Add(new BattingRecords
             {
-                id = _context.BattingConfigs.Count() + 1,
+                id = _context.BattingRecords.Count() + 1,
                 ballSpeed = ballSpeed,
                 batSpeed = batSpeed,
                 shotPlayed = shot.ToString()

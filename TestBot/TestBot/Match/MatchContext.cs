@@ -14,11 +14,9 @@ namespace TestBot.Match
         }
 
         public DbSet<BallAnalytics> BallByBallAnalytics { get; set; }
-
         public DbSet<BowlingConfigs> BowlingConfigs { get; set; }
-        public DbSet<BattingRecords> BattingConfigs { get; set; }
-
-
-
+        public DbSet<BattingRecords> BattingRecords { get; set; }
+        public DbSet<BattingSpeedConfigs> BattingSpeedConfigs { get; set; }
+        public DbSet<BattingShotConfigs> BattingShotConfigs { get; set; }
     }
 }
