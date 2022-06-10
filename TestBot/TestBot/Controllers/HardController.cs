@@ -61,12 +61,20 @@ namespace TestBot.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetBattingConfig")]
+        public List<BattingConfigs> GetBattingConfig()
+        {
+            return _bowlingService.getBattingConfigs();
+        }
+
+
         [HttpPost]
         [Route("PostBalldata")]
         public BatsmanModel PostBalldata(BallModel nextball)
         {
             Shots Shot = _bowlingService.getShot(nextball);
-            int batSpeed = _bowlingService.getBatSpeed(Shot,nextball);
+            int batSpeed = (int) (_bowlingService.getBatSpeed(Shot,nextball) *1.3);
 
             _bowlingService.insertBattingConfig(Shot,batSpeed,nextball.speed);
 

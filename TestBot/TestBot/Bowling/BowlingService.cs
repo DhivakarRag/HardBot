@@ -30,7 +30,7 @@ namespace TestBot.Bowling
                 bowlerType = ballToBowl.bowlerType,
                 bowlingType=ballToBowl.bowingType,
                 speed=ballToBowl.speed,
-                pitchZone = ballToBowl.zone  
+                pitchZone = ballToBowl.zone
                 
             }) ;
 
@@ -40,18 +40,18 @@ namespace TestBot.Bowling
         private (BallModel,int) decideBallToBowl()
         {
 
-                if (_hardRepository.hasWicketBall())
-                {
-                    return (getBallModel(_hardRepository.getWicketBall()), 1);
-                }
-                else if (_hardRepository.hasDotBall())
-                {
-                    return (getBallModel(_hardRepository.getDotBall()), 1);
-                }
-                else if (_hardRepository.hasTriedEnough())
-                {
+            if (_hardRepository.hasWicketBall())
+            {
+                return (getBallModel(_hardRepository.getWicketBall()), 1);
+            }
+            else if (_hardRepository.hasDotBall())
+            {
+                return (getBallModel(_hardRepository.getDotBall()), 1);
+            }
+            else if (_hardRepository.hasTriedEnough())
+            {
                 return (getBallModel(_hardRepository.getAnalytics().OrderBy(x => x.runsOnLastBall).First()), 1);
-                }
+            }
 
             return getRandomBowling();
         }
@@ -72,6 +72,11 @@ namespace TestBot.Bowling
         {
             return 45 - _allBalls.Count();
 
+        }
+
+        internal List<BattingConfigs> getBattingConfigs()
+        {
+            return _hardRepository.GetBattingConfigs();
         }
 
         public string getPlayerName()

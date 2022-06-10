@@ -75,12 +75,17 @@ namespace TestBot.Bowling
 
         public List<BowlingConfigs> GetBowlingConfigs()
         {
-            return _context.BowlingConfigs.Where(x => !x.isTried).ToList();
+            return _context.BowlingConfigs.ToList().Where(x => !x.isTried).ToList();
         }
 
         public bool hasTriedEnough()
         {
             return _context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 25;
+        }
+
+        internal List<BattingConfigs> GetBattingConfigs()
+        {
+            return _context.BattingConfigs.ToList();
         }
 
         internal void UpdateBowlingConfig(int currentBowlingConfigId, bool gotWicket, int runsOnLastBall)
@@ -103,6 +108,8 @@ namespace TestBot.Bowling
                 batSpeed = batSpeed,
                 shotPlayed = shot.ToString()
             }) ;
+
+            _context.SaveChanges();
         }
     }
 }
