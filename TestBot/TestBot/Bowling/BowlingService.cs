@@ -128,7 +128,7 @@ namespace TestBot.Bowling
 
 }
 
-        public void postLastBallData(MatchProgressModel matchProgressModel,int currentBowlingConfigId)
+        public void postLastBallData(MatchProgressModel matchProgressModel,int currentBowlingConfigId, BatsmanModel currentShot)
         {
             _hardRepository.UpdateAnalytics(matchProgressModel);
             _hardRepository.UpdateBowlingConfig(currentBowlingConfigId,matchProgressModel.iswicketlost,matchProgressModel.runonlastball);

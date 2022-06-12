@@ -9,6 +9,7 @@ namespace TestBot.Match
 {
     public class BattingSpeedConfigs
     {
+        int id { get; set; }
         BowlingType bowlingTypes { get; set; }
         BallPitchZone zone { get; set; }      
         int ballSpeed { get; set; }
