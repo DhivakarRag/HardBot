@@ -28,20 +28,17 @@ namespace TestBot.Controllers
 
         public static int currentBowlingConfigId;
 
-        public static IDictionary<BowlingType, List<Shots>> _BallToShotMap;
-        public static IDictionary<BowlingType, List<Shots>> _BallToShotMap_Batting;
+        public static Dictionary<BowlingType, List<Shots>> _BallToShotMap = LoadBallToShotMap();
+        public static Dictionary<BowlingType, List<Shots>> _BallToShotMap_Batting = LoadBallToShotMap();
         
-        private static IDictionary<int, int> _perfectBatSpeedMap;
+        private static Dictionary<int, int> _perfectBatSpeedMap = LoadBatSpeedToBallSpeed();
 
-        private static IDictionary<BowlingType, Shots> _perfectShotsForBallType;
+        private static IDictionary<BowlingType, Shots> _perfectShotsForBallType = new Dictionary<BowlingType, Shots>();
 
         public HardController(IService bowlingService)
         {
             _bowlingService = (BowlingService)bowlingService;
-            _BallToShotMap = LoadBallToShotMap();
-            _BallToShotMap_Batting = LoadBallToShotMap();
-            _perfectBatSpeedMap = LoadBatSpeedToBallSpeed();
-            _perfectShotsForBallType = new Dictionary<BowlingType, Shots>();
+
         }
 
        
@@ -75,11 +72,11 @@ namespace TestBot.Controllers
         {
             currentBallFromOpponent = nextball;
 
-            Shots Shot =   _perfectShotsForBallType.ContainsKey(nextball.bowingType) ? _perfectShotsForBallType[nextball.bowingType] :  _bowlingService.getShot(nextball);
+            Shots Shot = _perfectShotsForBallType.ContainsKey(nextball.bowingType) ? _perfectShotsForBallType[nextball.bowingType] : _bowlingService.getShot(nextball);
 
-            int batSpeed = _perfectBatSpeedMap.ContainsKey(nextball.speed) ? _perfectBatSpeedMap[nextball.speed] : (int) (_bowlingService.getBatSpeed(Shot,nextball) *1.3);
+            int batSpeed = GetBatSpeed(nextball, Shot);
 
-            _bowlingService.insertBattingConfig(Shot,batSpeed,nextball.speed);
+            _bowlingService.insertBattingConfig(Shot, batSpeed, nextball.speed);
 
             var playesShot = new BatsmanModel
             {
@@ -91,6 +88,32 @@ namespace TestBot.Controllers
             CurrentShot = playesShot;
 
             return playesShot;
+        }
+
+        private int GetBatSpeed(BallModel nextball, Shots Shot)
+        {
+            if(_perfectBatSpeedMap.ContainsKey(nextball.speed))
+            {
+                return _perfectBatSpeedMap[nextball.speed];
+            }
+
+            for (int i = nextball.speed; i <= nextball.speed+5; i++)
+            {
+                if (_perfectBatSpeedMap.ContainsKey(i))
+                {
+                    return (int)(_perfectBatSpeedMap[i] - (i - nextball.speed) * 0.75);
+                }
+            }
+
+            for (int i = nextball.speed; i >= nextball.speed - 5; i--)
+            {
+                if (_perfectBatSpeedMap.ContainsKey(i))
+                {
+                    return (int)(_perfectBatSpeedMap[i] + (i - nextball.speed) * 0.75);
+                }
+            }
+
+            return (int)(_bowlingService.getBatSpeed(Shot, nextball) * 1.3);
         }
 
         [HttpPost]
@@ -184,23 +207,46 @@ namespace TestBot.Controllers
             if(matchProgress.runonlastball == 6)
             {
                 setShotForBowlingType();
-                setBatSpeedForBallSpeed();
+                setBatSpeedForBallSpeed(CurrentShot.batSpeed);
             }
-            if(!matchProgress.isshotvalid && _BallToShotMap_Batting[currentBallFromOpponent.bowingType].Count > 1)
+            // check isShotValid 's reason
+            if(matchProgress.isMissed && _BallToShotMap_Batting[currentBallFromOpponent.bowingType].Count > 1)
             {
                 _BallToShotMap_Batting[currentBallFromOpponent.bowingType].Remove(CurrentShot.shots);
             }
+
+            if (matchProgress.runonlastball == 1)
+            {
+                int newComputedSpeed = (int)(CurrentShot.batSpeed * 1.2);
+                setBatSpeedForBallSpeed(newComputedSpeed > 120 ? 120 : newComputedSpeed);
+            }
+            if (matchProgress.runonlastball == 2 || (matchProgress.iswicketlost && matchProgress.OutReason == "Caught Out"))
+            {
+                int newComputedSpeed = (int)(CurrentShot.batSpeed * 1.15);
+                setBatSpeedForBallSpeed(newComputedSpeed > 120 ? 120 : newComputedSpeed);
+            }
+            if (matchProgress.runonlastball == 3)
+            {
+                int newComputedSpeed = (int)(CurrentShot.batSpeed * 1.1);
+                setBatSpeedForBallSpeed(newComputedSpeed > 120 ? 120 : newComputedSpeed);
+            }
+            if (matchProgress.runonlastball == 4)
+            {
+                int newComputedSpeed = (int)(CurrentShot.batSpeed * 1.05);
+                setBatSpeedForBallSpeed(newComputedSpeed > 120 ? 120 : newComputedSpeed);
+            }
+
         }
 
-        private void setBatSpeedForBallSpeed()
+        private void setBatSpeedForBallSpeed(int batSpeed)
         {
             if (_perfectBatSpeedMap.ContainsKey(currentBallFromOpponent.speed))
             {
-                _perfectBatSpeedMap[currentBallFromOpponent.speed] = CurrentShot.batSpeed;
+                _perfectBatSpeedMap[currentBallFromOpponent.speed] = batSpeed;
             }
             else
             {
-                _perfectBatSpeedMap.Add(currentBallFromOpponent.speed, CurrentShot.batSpeed);
+                _perfectBatSpeedMap.Add(currentBallFromOpponent.speed, batSpeed);
             }
         }
 
@@ -216,7 +262,7 @@ namespace TestBot.Controllers
             }
         }
 
-        private IDictionary<int, int> LoadBatSpeedToBallSpeed()
+        private static Dictionary<int, int> LoadBatSpeedToBallSpeed()
         {
             var map = new Dictionary<int, int>();
 
@@ -226,7 +272,7 @@ namespace TestBot.Controllers
             return map;
         }
 
-        private IDictionary<BowlingType, List<Shots>> LoadBallToShotMap()
+        private static Dictionary<BowlingType, List<Shots>> LoadBallToShotMap()
         {
             var map = new Dictionary<BowlingType, List<Shots>>();
 
