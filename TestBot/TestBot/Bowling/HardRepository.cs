@@ -80,7 +80,7 @@ namespace TestBot.Bowling
 
         public bool hasTriedEnough()
         {
-            return _context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 25;
+            return (_context.BowlingConfigs.ToList().Where(x => x.isTried).Count() > 25) && (_context.BowlingConfigs.ToList().Where(x => x.isTried).Select(y=>y.runsOnLastBall < 2).Any());
         }
 
         internal List<BattingRecords> GetBattingConfigs()

@@ -535,6 +535,163 @@ namespace TestBot
                 isTried = false, runsOnLastBall = null,
             });
 
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 46,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.Googly,
+                speed = (int)((Speedlimit.LB_MIN + Speedlimit.LB_MAX) / 2) + 6,
+                pitchZone = BallPitchZone.zone1,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 47,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.Googly,
+                speed = (int)((Speedlimit.LB_MIN + Speedlimit.LB_MAX) / 2) - 10,
+                pitchZone = BallPitchZone.zone1,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 48,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.Googly,
+                speed = (int)((Speedlimit.LB_MIN + Speedlimit.LB_MAX) / 2)+10,
+                pitchZone = BallPitchZone.zone1,
+                isTried = false,
+                runsOnLastBall = null,
+            });
+
+            // LB LegBreaks -2
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 49,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.LegBreak,
+                speed = (int)((Speedlimit.LB_MIN + Speedlimit.LB_MAX) / 2 + 10),
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 50,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.LegBreak,
+                speed = (int)((Speedlimit.LB_MIN + Speedlimit.LB_MAX) / 2 )- 10,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 51,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.LegBreak,
+                speed = (int)((Speedlimit.LB_MIN + Speedlimit.LB_MAX) / 2 )- 6,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+
+            //RAS_OutSwingers-2
+
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 52,
+                bowlerType = BowlerTypes.RAS,
+                bowlingType = BowlingType.Outswinger,
+                speed = (int)((Speedlimit.RAS_MIN + Speedlimit.RAS_MAX) / 2) - 6,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 53,
+                bowlerType = BowlerTypes.RAS,
+                bowlingType = BowlingType.Outswinger,
+                speed  = (int)((Speedlimit.RAS_MIN + Speedlimit.RAS_MAX) / 2) - 10,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 54,
+                bowlerType = BowlerTypes.RAS,
+                bowlingType = BowlingType.Outswinger,
+                speed = (int)((Speedlimit.RAS_MIN + Speedlimit.RAS_MAX) / 2) - 6 + 10,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 55,
+                bowlerType = BowlerTypes.RAF,
+                bowlingType = BowlingType.Inswingers,
+                speed = Speedlimit.RAF_MAX -11,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 56,
+                bowlerType = BowlerTypes.RAF,
+                bowlingType = BowlingType.Inswingers,
+                speed = Speedlimit.RAF_MIN +20,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 57,
+                bowlerType = BowlerTypes.RAF,
+                bowlingType = BowlingType.Inswingers,
+                speed = (int)(Speedlimit.RAF_MIN  + 5 ),
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 58,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.OffBreak,
+                speed = Speedlimit.LB_MAX - 17,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 59,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.OffBreak,
+                speed = Speedlimit.LB_MIN + 13,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+            });
+            _ = context.BowlingConfigs.Add(new BowlingConfigs
+            {
+                id = 60,
+                bowlerType = BowlerTypes.LB,
+                bowlingType = BowlingType.OffBreak,
+                speed = (int)Speedlimit.LB_MIN + 3 ,
+                pitchZone = BallPitchZone.zone2,
+                isTried = false,
+                runsOnLastBall = null
+
+            });
 
             context.SaveChanges();
         }
