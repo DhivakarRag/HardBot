@@ -28,8 +28,8 @@ namespace TestBot.Controllers
 
         public static int currentBowlingConfigId;
 
-        public static Dictionary<BowlingType, List<Shots>> _BallToShotMap = LoadBallToShotMap();
-        public static Dictionary<BowlingType, List<Shots>> _BallToShotMap_Batting = LoadBallToShotMap();
+        public static Dictionary<BowlingType, List<Shots>> _BallToShotMap_Bowling = LoadBallToShotMap_Bowling();
+        public static Dictionary<BowlingType, List<Shots>> _BallToShotMap_Batting = LoadBallToShotMap_Batting();
         
         private static Dictionary<int, int> _perfectBatSpeedMap = LoadBatSpeedToBallSpeed();
 
@@ -72,7 +72,7 @@ namespace TestBot.Controllers
         {
             currentBallFromOpponent = nextball;
 
-            Shots Shot = _perfectShotsForBallType.ContainsKey(nextball.bowingType) ? _perfectShotsForBallType[nextball.bowingType] : _bowlingService.getShot(nextball);
+            Shots Shot = _perfectShotsForBallType.ContainsKey(nextball.bowingType) ? _perfectShotsForBallType[nextball.bowingType] : getRandomShot(nextball);
 
             int batSpeed = GetBatSpeed(nextball, Shot);
 
@@ -88,6 +88,12 @@ namespace TestBot.Controllers
             CurrentShot = playesShot;
 
             return playesShot;
+        }
+
+        private Shots getRandomShot(BallModel nextball)
+        {
+            var random = new Random();
+            return _BallToShotMap_Batting[nextball.bowingType][random.Next(_BallToShotMap_Batting[nextball.bowingType].Count())];
         }
 
         private int GetBatSpeed(BallModel nextball, Shots Shot)
@@ -155,11 +161,19 @@ namespace TestBot.Controllers
             return Toss.Tail;
         }
 
+
+        [HttpGet]
+        [Route("GetBatSpeed")]
+        public Dictionary<int,int> GetBatSpeed()
+        {
+            return _bowlingService.getBatSpeedList(75, 160);
+        }
+
         private List<FieldingModel> getFieldForBall(BallModel currentBall)
         {
             List<FieldingModel> fieldingModels = new List<FieldingModel>();
 
-            List<Shots> shots = _BallToShotMap[currentBall.bowingType];
+            List<Shots> shots = _BallToShotMap_Bowling[currentBall.bowingType];
 
 
             foreach (var shot in shots)
@@ -210,7 +224,7 @@ namespace TestBot.Controllers
                 setBatSpeedForBallSpeed(CurrentShot.batSpeed);
             }
             // check isShotValid 's reason
-            if(matchProgress.isMissed && _BallToShotMap_Batting[currentBallFromOpponent.bowingType].Count > 1)
+            if(matchProgress.isMissed && _BallToShotMap_Batting[currentBallFromOpponent.bowingType].Count() > 1)
             {
                 _BallToShotMap_Batting[currentBallFromOpponent.bowingType].Remove(CurrentShot.shots);
             }
@@ -272,16 +286,30 @@ namespace TestBot.Controllers
             return map;
         }
 
-        private static Dictionary<BowlingType, List<Shots>> LoadBallToShotMap()
+        private static Dictionary<BowlingType, List<Shots>> LoadBallToShotMap_Batting()
         {
             var map = new Dictionary<BowlingType, List<Shots>>();
 
-            map.Add(BowlingType.Inswingers, new List<Shots> { Shots.Ondrive, Shots.pull, Shots.Straightdrive, Shots.Sweep });
+            map.Add(BowlingType.Inswingers, new List<Shots> { Shots.Ondrive, Shots.pull, Shots.Straightdrive, Shots.Sweep, Shots.Ondrive });
             map.Add(BowlingType.Outswinger, new List<Shots> { Shots.Coverdrive, Shots.Cut, Shots.latecut, Shots.Offdrive });
             map.Add(BowlingType.Bouncer, new List<Shots> { Shots.Uppercut, Shots.pull, Shots.hook });
-            map.Add(BowlingType.OffBreak, new List<Shots> { Shots.Sweep, Shots.latecut, Shots.Straightdrive, Shots.Ondrive });
-            map.Add(BowlingType.LegBreak, new List<Shots> { Shots.Coverdrive, Shots.Cut, Shots.latecut, Shots.Offdrive });
-            map.Add(BowlingType.Googly, new List<Shots> { Shots.Sweep, Shots.latecut, Shots.Straightdrive, Shots.Ondrive });
+            map.Add(BowlingType.OffBreak, new List<Shots> { Shots.Sweep, Shots.latecut, Shots.Straightdrive, Shots.Ondrive,Shots.pull });
+            map.Add(BowlingType.LegBreak, new List<Shots> { Shots.Cut, Shots.latecut, Shots.Offdrive, Shots.Coverdrive });
+            map.Add(BowlingType.Googly, new List<Shots> { Shots.Sweep, Shots.Straightdrive, Shots.Ondrive,Shots.Ondrive,Shots.latecut,Shots.Sweep,Shots.Sweep });
+
+            return map;
+        }
+
+        private static Dictionary<BowlingType, List<Shots>> LoadBallToShotMap_Bowling()
+        {
+            var map = new Dictionary<BowlingType, List<Shots>>();
+
+            map.Add(BowlingType.Inswingers, new List<Shots> { Shots.Ondrive, Shots.pull, Shots.Straightdrive, Shots.Sweep, Shots.Cut,Shots.latecut,Shots.Offdrive });
+            map.Add(BowlingType.Outswinger, new List<Shots> { Shots.Coverdrive, Shots.Cut, Shots.latecut, Shots.Offdrive });
+            map.Add(BowlingType.Bouncer, new List<Shots> { Shots.Uppercut, Shots.pull, Shots.hook });
+            map.Add(BowlingType.OffBreak, new List<Shots> { Shots.Sweep, Shots.latecut, Shots.Straightdrive, Shots.Ondrive,Shots.pull });
+            map.Add(BowlingType.LegBreak, new List<Shots> { Shots.Cut, Shots.latecut, Shots.Offdrive, Shots.Coverdrive });
+            map.Add(BowlingType.Googly, new List<Shots> { Shots.Sweep, Shots.Straightdrive, Shots.Ondrive });
 
             return map;
         }

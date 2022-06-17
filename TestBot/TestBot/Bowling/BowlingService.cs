@@ -234,6 +234,18 @@ namespace TestBot.Bowling
 
         }
 
+        internal Dictionary<int, int> getBatSpeedList(int v1, int v2)
+        {
+            var map = new Dictionary<int, int>();
+
+            for (int i=v1;i<=v2;i++)
+            {
+                map.Add(i, (int)(calculateSpeed(0, new BallModel { speed = i })*1.3 ));
+            }
+
+            return map;
+        }
+
         public int getBatSpeed(Shots shot, BallModel nextball)
         {
             int angle = 0;
